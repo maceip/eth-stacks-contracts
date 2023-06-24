@@ -26,7 +26,7 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "localhost",
+  defaultNetwork: "goerli",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -53,6 +53,9 @@ const config: HardhatUserConfig = {
     goerli: {
       url: `https://eth-goerli.alchemyapi.io/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
+      gasMultiplier: 10,
+      gasPrice: 1000000000 * 30,
+      blockGasLimit: 0x1fffffffffffff
     },
     arbitrum: {
       url: `https://arb-mainnet.g.alchemy.com/v2/${providerApiKey}`,
