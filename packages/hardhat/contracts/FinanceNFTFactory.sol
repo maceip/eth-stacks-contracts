@@ -8,7 +8,8 @@ interface IFinanceNFT {
     function initialize(string calldata _name, string calldata _symbol, address _owner, string memory uri) external;
 }
 
-contract AIrtNFTFactory is Initializable {
+
+contract FinanceNFTFactory is Initializable {
     address public nftImplementation;
 
     constructor() {

@@ -24,7 +24,8 @@ contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
         __AccessControl_init();
         _grantRole(DEFAULT_ADMIN_ROLE, _owner);
         _grantRole(MINTER_ROLE, _owner);
-        mint(_owner, uri);
+        _safeMint(_owner, 0);
+        _setTokenURI(0, uri);
     }
 
     function mint(address to, string memory uri) public onlyRole(MINTER_ROLE) {
