@@ -1,0 +1,3 @@
+[submodule "packages/hardhat/lib/tokenbound"]
+	path = packages/hardhat/lib/tokenbound
+	url = https://github.com/tokenbound/contracts.git
