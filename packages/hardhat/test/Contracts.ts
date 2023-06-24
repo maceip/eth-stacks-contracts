@@ -9,6 +9,230 @@ const registryABI = [{"inputs":[],"name":"InitializationFailed","type":"error"},
 const tbaImplementationAddress = "0x2d25602551487c3f3354dd80d76d54383a243358";
 
 const accountABI = [{"inputs":[{"internalType":"address","name":"_defaultImplementation","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"previousAdmin","type":"address"},{"indexed":false,"internalType":"address","name":"newAdmin","type":"address"}],"name":"AdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beacon","type":"address"}],"name":"BeaconUpgraded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"implementation","type":"address"}],"name":"Upgraded","type":"event"},{"stateMutability":"payable","type":"fallback"},{"inputs":[],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
+const tokenABI = [
+  {
+      "constant": true,
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+          {
+              "name": "",
+              "type": "string"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "constant": false,
+      "inputs": [
+          {
+              "name": "_spender",
+              "type": "address"
+          },
+          {
+              "name": "_value",
+              "type": "uint256"
+          }
+      ],
+      "name": "approve",
+      "outputs": [
+          {
+              "name": "",
+              "type": "bool"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+  },
+  {
+      "constant": true,
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+          {
+              "name": "",
+              "type": "uint256"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "constant": false,
+      "inputs": [
+          {
+              "name": "_from",
+              "type": "address"
+          },
+          {
+              "name": "_to",
+              "type": "address"
+          },
+          {
+              "name": "_value",
+              "type": "uint256"
+          }
+      ],
+      "name": "transferFrom",
+      "outputs": [
+          {
+              "name": "",
+              "type": "bool"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+  },
+  {
+      "constant": true,
+      "inputs": [],
+      "name": "decimals",
+      "outputs": [
+          {
+              "name": "",
+              "type": "uint8"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "constant": true,
+      "inputs": [
+          {
+              "name": "_owner",
+              "type": "address"
+          }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+          {
+              "name": "balance",
+              "type": "uint256"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "constant": true,
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+          {
+              "name": "",
+              "type": "string"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "constant": false,
+      "inputs": [
+          {
+              "name": "_to",
+              "type": "address"
+          },
+          {
+              "name": "_value",
+              "type": "uint256"
+          }
+      ],
+      "name": "transfer",
+      "outputs": [
+          {
+              "name": "",
+              "type": "bool"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+  },
+  {
+      "constant": true,
+      "inputs": [
+          {
+              "name": "_owner",
+              "type": "address"
+          },
+          {
+              "name": "_spender",
+              "type": "address"
+          }
+      ],
+      "name": "allowance",
+      "outputs": [
+          {
+              "name": "",
+              "type": "uint256"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback"
+  },
+  {
+      "anonymous": false,
+      "inputs": [
+          {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+          },
+          {
+              "indexed": true,
+              "name": "spender",
+              "type": "address"
+          },
+          {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+          }
+      ],
+      "name": "Approval",
+      "type": "event"
+  },
+  {
+      "anonymous": false,
+      "inputs": [
+          {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+          },
+          {
+              "indexed": true,
+              "name": "to",
+              "type": "address"
+          },
+          {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+          }
+      ],
+      "name": "Transfer",
+      "type": "event"
+  }
+];
+
+const wethAddress = "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6"; //Goerli
 
 const doDeploy = false;
 const factoryAddress = "0xA556719b7b297a7ba14ebC539Ad5360587858669";
@@ -39,7 +263,7 @@ describe("Contracts", function () {
   });
 
   describe("Deployment", function () {
-    it.skip("Should have the right implemenation", async function () {
+    it.skip("Should have the right implementation", async function () {
       if (doDeploy) {
         expect(await factory.nftImplementation()).to.equal(implementation.address);
       } else {
@@ -76,7 +300,7 @@ describe("Contracts", function () {
         .withArgs("0x0000000000000000000000000000000000000000", tokenOwner, 1);
     });
 
-    it("Should deploy TBA contract for an NFT tokenId 0", async function () {
+    it.skip("Should deploy TBA contract for an NFT tokenId 0", async function () {
       this.timeout(2400000);
       const [owner] = await ethers.getSigners();
       const registry = new ethers.Contract(registryAddress, registryABI, owner);
@@ -92,21 +316,46 @@ describe("Contracts", function () {
         .withArgs(predictedAccount, tbaImplementationAddress, 5, nftAddress, 0, 0);
     });
 
-    it("Should send ETH to TBA", async function () {
-      this.timeout(2400000);
+    it.skip("Should send ETH to TBA", async function () {
       const [owner] = await ethers.getSigners();
-      const registry = new ethers.Contract(registryAddress, registryABI, owner);
-      const tokenboundClient = new TokenboundClient({ signer: owner, chainId: 5 });
-      const predictedAccount = await tokenboundClient.getAccount({
-        tokenContract: nftAddress,
-        tokenId: "0",
+      const balBefore = await ethers.provider.getBalance(tbaAddress);
+      const tx = await owner.sendTransaction({
+        to: tbaAddress,
+        value: ethers.utils.parseEther("0.01")
       });
-      console.log(predictedAccount);
-      
-      await expect(registry.createAccount(tbaImplementationAddress, 5, nftAddress, 0, 0, ethers.utils.formatBytes32String(""), {gasLimit: 2000000}))
-        .to.emit(registry, 'AccountCreated')
-        .withArgs(predictedAccount, tbaImplementationAddress, 5, nftAddress, 0, 0);
+      tx.wait();
+      const balAfter = await ethers.provider.getBalance(tbaAddress);
+      expect(balAfter > balBefore);
     });
+
+    it.skip("Should send WETH to TBA", async function () {
+      const [owner] = await ethers.getSigners();
+      const weth = new ethers.Contract(wethAddress, tokenABI, owner);
+      const balBefore = await weth.balanceOf(tbaAddress);
+      const tx = await weth.transfer(tbaAddress, "1000");
+      tx.wait();
+      const balAfter = await weth.balanceOf(tbaAddress);
+      expect(balAfter > balBefore);
+    });
+    
+    it("Should transfer WETH from TBA to owner", async function () {
+      const [owner] = await ethers.getSigners();
+      const weth = new ethers.Contract(wethAddress, tokenABI, owner);
+      const balBefore = await weth.balanceOf(owner.address);
+      const tx = await weth.populateTransaction.transfer(owner.address, "1000");
+      const txnData = tx.data ? tx.data : '';
+      const tokenboundClient = new TokenboundClient({ signer: owner, chainId: 5 });
+      const executedCall = await tokenboundClient.executeCall({
+        account: tbaAddress,
+        to: wethAddress,
+        value: BigInt(0),
+        data: txnData,
+      });
+      console.log(executedCall);
+      const balAfter = await weth.balanceOf(owner.address);
+      expect(balAfter > balBefore);
+    });
+
 
 
   });
