@@ -8,17 +8,17 @@ module.exports = {
     themes: [
       {
         scaffoldEth: {
-          primary: "#93BBFB",
-          "primary-content": "#212638",
-          secondary: "#DAE8FF",
+          primary: "#081EEA",
+          "primary-content": "#021504",
+          secondary: "#e9e9e9",
           "secondary-content": "#212638",
           accent: "#93BBFB",
           "accent-content": "#212638",
           neutral: "#212638",
           "neutral-content": "#ffffff",
           "base-100": "#ffffff",
-          "base-200": "#f4f8ff",
-          "base-300": "#DAE8FF",
+          "base-200": "#F6F6F6",
+          "base-300": "#ffffff",
           "base-content": "#212638",
           info: "#93BBFB",
           success: "#34EEB6",
@@ -34,22 +34,22 @@ module.exports = {
       },
       {
         scaffoldEthDark: {
-          primary: "#212638",
-          "primary-content": "#F9FBFF",
-          secondary: "#2A3655",
+          primary: "#081EEA",
+          "primary-content": "#021504",
+          secondary: "#e9e9e9", //primary gray
           "secondary-content": "#F9FBFF",
           accent: "#4969A6",
           "accent-content": "#F9FBFF",
           neutral: "#F9FBFF",
           "neutral-content": "#385183",
-          "base-100": "#385183",
-          "base-200": "#2A3655",
-          "base-300": "#212638",
+          "base-100": "#F6F6F6",
+          "base-200": "#151516", //main bg color
+          "base-300": "#252633",
           "base-content": "#F9FBFF",
           info: "#385183",
           success: "#34EEB6",
-          warning: "#FFCF72",
-          error: "#FF8863",
+          warning: "#FA7C28",
+          error: "#E73232",
 
           "--rounded-btn": "9999rem",
 
@@ -89,9 +89,17 @@ module.exports = {
   },
   theme: {
     // Extend Tailwind classes (e.g. font-bai-jamjuree, animate-grow)
+
+    fontSize: {
+      sm: ".75rem",
+      base: "1rem",
+      lg: ["1.5rem", { fontWeight: "700" }],
+      xl: ["2rem", { fontWeight: "700" }],
+      "2xl": ["3rem", { fontWeight: "700" }],
+    },
     extend: {
       fontFamily: {
-        "bai-jamjuree": ["Bai Jamjuree", "sans-serif"],
+        satoshi: ["Satoshi", "sans-serif"],
       },
       keyframes: {
         grow: {
