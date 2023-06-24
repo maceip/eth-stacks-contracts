@@ -9,18 +9,20 @@
 
 body {
   min-height: 100vh;
+  @apply font-satoshi;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  margin-bottom: 0.5rem;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
-p {
-  margin: 1rem 0;
+p,
+span {
+  letter-spacing: -0.02em;
 }
 
 .btn {
