@@ -11,7 +11,7 @@ contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    CountersUpgradeable.Counter private _tokenIdCounter;
+    CountersUpgradeable.Counter public _tokenIdCounter;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
