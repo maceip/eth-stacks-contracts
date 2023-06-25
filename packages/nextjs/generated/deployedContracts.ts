@@ -5,7 +5,7 @@ const contracts = {
       name: "goerli",
       contracts: {
         FinanceNFT: {
-          address: "0xa15A7822EB58BD80f069903d1963dd9EDb1B4BC3",
+          address: "0xa0F4b01FAa99c0C67A246E6Db86cDfa090F300F7",
           abi: [
             {
               inputs: [],
@@ -234,6 +234,19 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [],
+              name: "_tokenIdCounter",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "_value",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
               inputs: [
                 {
                   internalType: "address",
@@ -268,6 +281,35 @@ const contracts = {
                 },
               ],
               stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "registry",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "implementation",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "tokenId",
+                  type: "uint256",
+                },
+              ],
+              name: "createAccount",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "tba",
+                  type: "address",
+                },
+              ],
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -371,6 +413,16 @@ const contracts = {
                   internalType: "string",
                   name: "uri",
                   type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "registry",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "implementation",
+                  type: "address",
                 },
               ],
               name: "initialize",
@@ -634,7 +686,7 @@ const contracts = {
           ],
         },
         FinanceNFTFactory: {
-          address: "0xE6Baab60c8920DbAe3d5b0f7F5cbd0638CEa21A4",
+          address: "0x01C8952B9e779E1C50C9e18bffE71Fa90C990ACb",
           abi: [
             {
               inputs: [],
@@ -695,6 +747,16 @@ const contracts = {
                   name: "uri",
                   type: "string",
                 },
+                {
+                  internalType: "address",
+                  name: "registry",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "implementation",
+                  type: "address",
+                },
               ],
               name: "createFinanceNFT",
               outputs: [
@@ -705,6 +767,25 @@ const contracts = {
                 },
               ],
               stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "user",
+                  type: "address",
+                },
+              ],
+              name: "getContractForUser",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              stateMutability: "view",
               type: "function",
             },
             {
@@ -723,6 +804,25 @@ const contracts = {
             {
               inputs: [],
               name: "nftImplementation",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              name: "ownerToContract",
               outputs: [
                 {
                   internalType: "address",

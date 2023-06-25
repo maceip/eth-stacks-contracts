@@ -7,6 +7,10 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
+interface IRegistry {
+    function createAccount(address implementation, uint256 chainId, address tokenContract, uint256 tokenId, uint256 salt, bytes calldata initData) external returns (address);
+}
+
 contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, AccessControlUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
@@ -18,7 +22,7 @@ contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
        _disableInitializers();
     }
 
-    function initialize(string calldata _name, string calldata _symbol, address _owner, string memory uri) initializer public {
+    function initialize(string calldata _name, string calldata _symbol, address _owner, string memory uri, address registry, address implementation) initializer public {
         __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __AccessControl_init();
@@ -27,6 +31,7 @@ contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
         _safeMint(_owner, 0);
         _setTokenURI(0, uri);
         _tokenIdCounter.increment();
+        createAccount(registry, implementation, 0);
     }
 
     function mint(address to, string memory uri) public onlyRole(MINTER_ROLE) {
@@ -34,6 +39,10 @@ contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    function createAccount(address registry, address implementation, uint256 tokenId) public returns(address tba) {
+        tba = IRegistry(registry).createAccount(implementation, block.chainid, address(this), tokenId, 0, "0x8129xc1c");
     }
 
     // The following functions are overrides required by Solidity.
