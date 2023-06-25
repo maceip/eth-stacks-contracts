@@ -42,7 +42,7 @@ contract FinanceNFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
     }
 
     function createAccount(address registry, address implementation, uint256 tokenId) public returns(address tba) {
-        tba = IRegistry(registry).createAccount(implementation, block.chainid, address(this), tokenId, 0, "0x8129xc1c");
+        tba = IRegistry(registry).createAccount(implementation, block.chainid, address(this), tokenId, 0, abi.encodeWithSignature("initialize()"));
     }
 
     // The following functions are overrides required by Solidity.

@@ -3,10 +3,11 @@ import { ethers } from "hardhat";
 import hre from "hardhat";
 import { TokenboundClient } from '@tokenbound/sdk';
 import { FinanceNFT, FinanceNFTFactory } from "../typechain-types";
+import { ContractFactory } from "ethers";
 
 const registryAddress = "0x02101dfB77FDE026414827Fdc604ddAF224F0921";
 const registryABI = [{"inputs":[],"name":"InitializationFailed","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"address","name":"implementation","type":"address"},{"indexed":false,"internalType":"uint256","name":"chainId","type":"uint256"},{"indexed":false,"internalType":"address","name":"tokenContract","type":"address"},{"indexed":false,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"salt","type":"uint256"}],"name":"AccountCreated","type":"event"},{"inputs":[{"internalType":"address","name":"implementation","type":"address"},{"internalType":"uint256","name":"chainId","type":"uint256"},{"internalType":"address","name":"tokenContract","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"salt","type":"uint256"}],"name":"account","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"implementation","type":"address"},{"internalType":"uint256","name":"chainId","type":"uint256"},{"internalType":"address","name":"tokenContract","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"salt","type":"uint256"},{"internalType":"bytes","name":"initData","type":"bytes"}],"name":"createAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"nonpayable","type":"function"}];
-const tbaImplementationAddress = "0x2d25602551487c3f3354dd80d76d54383a243358";
+const tbaImplementationAddress = "0x2D25602551487C3f3354dD80D76D54383A243358";
 
 const accountABI = [{"inputs":[{"internalType":"address","name":"_guardian","type":"address"},{"internalType":"address","name":"entryPoint_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"AccountLocked","type":"error"},{"inputs":[],"name":"ExceedsMaxLockTime","type":"error"},{"inputs":[],"name":"InvalidInput","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"OwnershipCycle","type":"error"},{"inputs":[],"name":"UntrustedImplementation","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"previousAdmin","type":"address"},{"indexed":false,"internalType":"address","name":"newAdmin","type":"address"}],"name":"AdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beacon","type":"address"}],"name":"BeaconUpgraded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"lockedUntil","type":"uint256"}],"name":"LockUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"bytes4","name":"selector","type":"bytes4"},{"indexed":false,"internalType":"address","name":"implementation","type":"address"}],"name":"OverrideUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"bool","name":"hasPermission","type":"bool"}],"name":"PermissionUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"target","type":"address"},{"indexed":true,"internalType":"uint256","name":"value","type":"uint256"},{"indexed":false,"internalType":"bytes","name":"data","type":"bytes"}],"name":"TransactionExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"implementation","type":"address"}],"name":"Upgraded","type":"event"},{"stateMutability":"payable","type":"fallback"},{"inputs":[],"name":"_entryPoint","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"entryPoint","outputs":[{"internalType":"contract IEntryPoint","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"executeCall","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getNonce","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"guardian","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"caller","type":"address"}],"name":"isAuthorized","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"isLocked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"hash","type":"bytes32"},{"internalType":"bytes","name":"signature","type":"bytes"}],"name":"isValidSignature","outputs":[{"internalType":"bytes4","name":"magicValue","type":"bytes4"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_lockedUntil","type":"uint256"}],"name":"lock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"lockedUntil","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nonce","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint256[]","name":"","type":"uint256[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"},{"internalType":"bytes","name":"","type":"bytes"}],"name":"onERC1155BatchReceived","outputs":[{"internalType":"bytes4","name":"","type":"bytes4"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bytes","name":"","type":"bytes"}],"name":"onERC1155Received","outputs":[{"internalType":"bytes4","name":"","type":"bytes4"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"receivedTokenId","type":"uint256"},{"internalType":"bytes","name":"","type":"bytes"}],"name":"onERC721Received","outputs":[{"internalType":"bytes4","name":"","type":"bytes4"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"bytes4","name":"","type":"bytes4"}],"name":"overrides","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"permissions","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"proxiableUUID","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes4[]","name":"selectors","type":"bytes4[]"},{"internalType":"address[]","name":"implementations","type":"address[]"}],"name":"setOverrides","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"callers","type":"address[]"},{"internalType":"bool[]","name":"_permissions","type":"bool[]"}],"name":"setPermissions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"uint256","name":"chainId","type":"uint256"},{"internalType":"address","name":"tokenContract","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newImplementation","type":"address"}],"name":"upgradeTo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newImplementation","type":"address"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"upgradeToAndCall","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"bytes","name":"initCode","type":"bytes"},{"internalType":"bytes","name":"callData","type":"bytes"},{"internalType":"uint256","name":"callGasLimit","type":"uint256"},{"internalType":"uint256","name":"verificationGasLimit","type":"uint256"},{"internalType":"uint256","name":"preVerificationGas","type":"uint256"},{"internalType":"uint256","name":"maxFeePerGas","type":"uint256"},{"internalType":"uint256","name":"maxPriorityFeePerGas","type":"uint256"},{"internalType":"bytes","name":"paymasterAndData","type":"bytes"},{"internalType":"bytes","name":"signature","type":"bytes"}],"internalType":"struct UserOperation","name":"userOp","type":"tuple"},{"internalType":"bytes32","name":"userOpHash","type":"bytes32"},{"internalType":"uint256","name":"missingAccountFunds","type":"uint256"}],"name":"validateUserOp","outputs":[{"internalType":"uint256","name":"validationData","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
 
@@ -1952,11 +1953,11 @@ const poolABI = [
 const wethAddress = "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6"; //Goerli
 
 const doDeploy = false;
-const factoryAddress = "0xA556719b7b297a7ba14ebC539Ad5360587858669";
+const factoryAddress = "0x7f9d84Bf414F63E98D911c835a594435b376B390";
 
 // Example NFT contract and TBA
-var nftAddress = "0x3f74F59fcD89c08CB0a29a08042ccd84E26F624D";
-var tbaAddress = "0x4b96C46cdBC95c1Da18Bb0cCa9Ec8F37B4D61EB0"; // for tokenId 0
+var nftAddress = "0x953571d88Eead08c7a13b373C85C6b5bAAf90EB8";
+var tbaAddress = "0x258C57DfaCA41075A03967f04196630A6799766e"; // for tokenId 0
 
 // Compound:
 const compoundWethAddress = "0x42a71137C09AE83D8d05974960fd607d40033499"; // Goerli
@@ -1992,12 +1993,16 @@ describe("Contracts", function () {
 
   let factory: FinanceNFTFactory;
   let implementation: FinanceNFT;
+  const uri = "ipfs://bafkreignwvrxe6ecfftnrsnwp7gob2yigrfixklm77luwuow4rceit2bue";
+  let financeNFTFactoryFactory: ContractFactory;
+  let financeNFTFactory: ContractFactory;
+
   before(async () => {
     const [owner] = await ethers.getSigners();
-    const financeNFTFactoryFactory = await ethers.getContractFactory("FinanceNFTFactory");
+    financeNFTFactoryFactory = await ethers.getContractFactory("FinanceNFTFactory");
+    financeNFTFactory = await ethers.getContractFactory("FinanceNFT");
     if (doDeploy) {
       // nft implementation
-      const financeNFTFactory = await ethers.getContractFactory("FinanceNFT");
       implementation = (await financeNFTFactory.deploy()) as FinanceNFT;
       await implementation.deployed();
       // nft factory
@@ -2021,47 +2026,64 @@ describe("Contracts", function () {
 
     var nft: FinanceNFT;
 
-    it.skip("Should deploy a new NFT contract for a company", async function () {
-      const name = "Company A";
-      const symbol = "AAA";
-      const uri = "ipfs:/testing"; // this is the metadata uri for tokenId 0 -- the master NFT
+    it.skip("Should deploy a new NFT contract for a user", async function () {
+      const name = "Anon Degen";
+      const symbol = "DGEN";
       const [owner] = await ethers.getSigners();
       const contractOwner = owner.address;
 
       if (doDeploy) {
-        const deployResult = await factory.createFinanceNFT(name, symbol, contractOwner, uri);
+        const deployResult = await factory.createFinanceNFT(name, symbol, contractOwner, uri, registryAddress, tbaImplementationAddress, {gasLimit: 2000000});
         const { events } = await deployResult.wait();
-        const event = events.find(x => x.event === "FinanceNFTCreated");
-        nftAddress = event.args[1];
+        const nftEvent = events.find(x => x.event === "FinanceNFTCreated");
+        nftAddress = nftEvent.args[1];
+        //const tbaEvent = events.find(x => x.event === "AccountCreated");
+        //tbaAddress = tbaEvent.args[0];
       }
       //console.log("nftAddress", nftAddress);
       expect(nftAddress).to.not.be.null;
     });
 
     it.skip("Should mint a new NFT token", async function () {
-      const uri = "ipfs:/token1"; // this is the metadata uri for tokenId 1
       const [owner] = await ethers.getSigners();
-      nft = new ethers.Contract(nftAddress, implementation.interface, owner) as FinanceNFT;
+      nft = new ethers.Contract(nftAddress, financeNFTFactory.interface, owner) as FinanceNFT;
       const tokenOwner = owner.address;
       await expect(nft.mint(tokenOwner, uri))
         .to.emit(nft, 'Transfer')
         .withArgs("0x0000000000000000000000000000000000000000", tokenOwner, 1);
     });
 
-    it.skip("Should deploy TBA contract for an NFT tokenId 0", async function () {
+    it.skip("Should directly deploy TBA contract for an NFT tokenId 1", async function () {
       this.timeout(2400000);
       const [owner] = await ethers.getSigners();
       const registry = new ethers.Contract(registryAddress, registryABI, owner);
       const tokenboundClient = new TokenboundClient({ signer: owner, chainId: 5 });
       const predictedAccount = await tokenboundClient.getAccount({
         tokenContract: nftAddress,
-        tokenId: "0",
+        tokenId: "1",
       });
       console.log(predictedAccount);
       
-      await expect(registry.createAccount(tbaImplementationAddress, 5, nftAddress, 0, 0, ethers.utils.formatBytes32String("0x8129xc1c"), {gasLimit: 2000000}))
+      await expect(registry.createAccount(tbaImplementationAddress, 5, nftAddress, 1, 0, ethers.utils.formatBytes32String("0x8129xc1c"), {gasLimit: 2000000}))
         .to.emit(registry, 'AccountCreated')
-        .withArgs(predictedAccount, tbaImplementationAddress, 5, nftAddress, 0, 0);
+        .withArgs(predictedAccount, tbaImplementationAddress, 5, nftAddress, 1, 0);
+    });
+
+    it.skip("Should deploy TBA contract for an NFT tokenId 1", async function () {
+      this.timeout(2400000);
+      const [owner] = await ethers.getSigners();
+      nft = new ethers.Contract(nftAddress, financeNFTFactory.interface, owner) as FinanceNFT;
+      const registry = new ethers.Contract(registryAddress, registryABI, owner);
+      const tokenboundClient = new TokenboundClient({ signer: owner, chainId: 5 });
+      const predictedAccount = await tokenboundClient.getAccount({
+        tokenContract: nftAddress,
+        tokenId: "1",
+      });
+      console.log(predictedAccount);
+      
+      await expect(nft.createAccount(registryAddress, tbaImplementationAddress, 1, {gasLimit: 2000000}))
+        .to.emit(registry, 'AccountCreated')
+        .withArgs(predictedAccount, tbaImplementationAddress, 5, nftAddress, 1, 0);
     });
 
     it.skip("Should send ETH to TBA", async function () {
