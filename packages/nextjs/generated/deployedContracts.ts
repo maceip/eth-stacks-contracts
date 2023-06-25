@@ -5,7 +5,7 @@ const contracts = {
       name: "goerli",
       contracts: {
         FinanceNFT: {
-          address: "0xa0F4b01FAa99c0C67A246E6Db86cDfa090F300F7",
+          address: "0x8064a85F9cf2A52fDc786b82be36b9F0D209c842",
           abi: [
             {
               inputs: [],
