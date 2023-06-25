@@ -10,7 +10,7 @@
     "generate": "hardhat run scripts/generateAccount.ts",
     "lint": "eslint --config ./.eslintrc.json --ignore-path ./.eslintignore ./*.ts ./deploy/**/*.ts ./scripts/**/*.ts ./test/**/*.ts",
     "lint-staged": "eslint --config ./.eslintrc.json --ignore-path ./.eslintignore",
-    "test": "REPORT_GAS=true hardhat test --network hardhat",
+    "test": "REPORT_GAS=true hardhat test --network goerli",
     "verify": "hardhat etherscan-verify"
   },
   "devDependencies": {
@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.1",
+    "@tokenbound/sdk": "^0.3.0",
     "dotenv": "^16.0.3",
     "envfile": "^6.18.0",
     "qrcode": "^1.5.1"
